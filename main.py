@@ -22,8 +22,52 @@ X /= 255.0
 # Split the dataset into training and testing sets
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=42)
 
-# Build a Convolutional Neural Network (CNN)
+# Build a Neural Network with PyTorch
 device = 'cpu'
+mnist_dim = X.shape[1]
+hidden_dim = int(mnist_dim / 8)
+output_dim = len(np.unique(mnist.target))
+
+# Define the architecture of the neural network
+class ClassifierModule(nn.Module):
+    def __init__(
+            self,
+            input_dim=mnist_dim,
+            hidden_dim=hidden_dim,
+            output_dim=output_dim,
+            dropout=0.5,
+    ):
+        super(ClassifierModule, self).__init__()
+        self.dropout = nn.Dropout(dropout)
+
+        # Define the hidden layer and the output layer
+        self.hidden = nn.Linear(input_dim, hidden_dim)
+        self.output = nn.Linear(hidden_dim, output_dim)
+
+    def forward(self, X, **kwargs):
+        # Forward pass of the neural network
+        X = F.relu(self.hidden(X))
+        X = self.dropout(X)
+        X = F.softmax(self.output(X), dim=-1)
+        return X
+
+# Train the neural network
+torch.manual_seed(0)
+net = NeuralNetClassifier(
+    ClassifierModule,
+    max_epochs=20,
+    lr=0.1,
+    device=device,
+)
+net.fit(X_train, y_train)
+
+# Test the model and calculate accuracy
+y_pred = net.predict(X_test)
+st.subheader('Test Accuracy (PyTorch model)')
+accuracy = accuracy_score(y_test, y_pred)
+st.write(f'Test accuracy: {accuracy:.2%}')
+
+# Build a Convolutional Neural Network (CNN)
 XCnn = X.reshape(-1, 1, 28, 28)
 XCnn_train, XCnn_test, y_train, y_test = train_test_split(XCnn, y, test_size=0.25, random_state=42)
 
@@ -62,23 +106,10 @@ cnn = NeuralNetClassifier(
 cnn.fit(XCnn_train, y_train)
 
 # Test the model and calculate accuracy
-y_pred = cnn.predict(XCnn_test)
+y_pred_cnn = cnn.predict(XCnn_test)
 st.subheader('Test Accuracy (CNN)')
-accuracy = accuracy_score(y_test, y_pred)
-st.write(f'Test accuracy: {accuracy:.2%}')
-
-# Visualize some misclassified images
-error_mask = y_pred != y_test
-st.subheader('Misclassified Images (CNN)')
-
-# Display up to 16 misclassified images and their predicted labels
-plt.figure(figsize=(10, 10))
-for i in range(min(16, sum(error_mask))):
-    plt.subplot(4, 4, i + 1)
-    plt.imshow(X_test[error_mask][i].reshape(28, 28), cmap='gray')
-    plt.title(y_pred[error_mask][i])
-    plt.axis('off')
-st.pyplot(plt)
+accuracy_cnn = accuracy_score(y_test, y_pred_cnn)
+st.write(f'Test accuracy: {accuracy_cnn:.2%}')
 
 # Define a function to generate a random digit
 def generate_random_digit():
