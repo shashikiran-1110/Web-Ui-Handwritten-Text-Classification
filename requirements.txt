@@ -7,6 +7,6 @@ torch
 skorch
 streamlit-drawable-canvas
 opencv-python-headless==4.5.3.56
-libgl1-mesa-glx
+sudo apt-get install libgl1-mesa-glx
 pyvirtualdisplay
 streamlit-drawable-canvas
