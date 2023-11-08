@@ -153,35 +153,27 @@ for i in range(min(16, sum(error_mask))):
     plt.axis('off')
 st.pyplot(plt)
 
-# Add a canvas for drawing a digit
-st.subheader('9. Draw a Digit')
-
-# Create a canvas component
 # Create a canvas component
 canvas_result = st_canvas(
-    fill_color="rgba(0, 0, 0, 1)",  # Fixed fill color with some opacity
+    fill_color="rgba(0, 0, 0, 1)",
     stroke_width=20,
     stroke_color="black",
     background_color="white",
-    width=150,
-    height=150,
+    width=28,  # Adjusted to match your model's input size
+    height=28,  # Adjusted to match your model's input size
     drawing_mode="freedraw",
     key="canvas",
 )
 
-# Do something interesting with the image data and labels
+# Check if the canvas has data and make predictions
 if st.button('Predict'):
     if canvas_result.image_data is not None:
-        st.image(canvas_result.image_data)
-        
-        # Convert the image data to a NumPy array and preprocess
-        img_data = canvas_result.image_data.astype('float32') / 255.0
-        img_data = img_data.reshape(1, 1, 150, 150)  # Adjust dimensions as needed
-        
-        # Resize and preprocess the image
-        img_data = cv2.resize(img_data, (28, 28), interpolation=cv2.INTER_LINEAR)
+        # Preprocess the image data with Pillow
+        img_data = Image.fromarray((canvas_result.image_data * 255).astype('uint8'))
+        img_data = img_data.resize((28, 28))
+        img_data = np.array(img_data).astype('float32') / 255.0
         img_data = img_data.reshape(-1, 1, 28, 28)
-        
+
         # Predict the digit
         pred = cnn.predict(img_data)
         st.title('Predicted')
