@@ -1,9 +1,10 @@
+torchvision
 streamlit
+matplotlib
 scikit-learn
 numpy
 torch
 skorch
 streamlit-drawable-canvas
-opencv-python
+opencv-python 
 opencv-python-headless==4.5.3.56
-matplotlib
