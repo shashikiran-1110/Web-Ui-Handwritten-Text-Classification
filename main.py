@@ -178,16 +178,18 @@ st.image(digit_image, caption=f'Random Digit: {random_digit}', use_column_width=
 
 # Load your trained CNN model (cnn) here
 
-# Check if the canvas has data and make predictions
-if st.button('Predict'):
-    if digit_image is not None:
-        # Preprocess the image data with Pillow
-        img_data = digit_image.resize((28, 28))
-        img_data = np.array(img_data).astype('float32') / 255.0
-        img_data = img_data.reshape(-1, 1, 28, 28)
+# Preprocess the image data with Pillow
+img_data = digit_image.resize((28, 28))
+img_data = np.array(img_data).astype('float32') / 255.0
+img_data = img_data.reshape(-1, 1, 28, 28)
 
-        # Predict the digit using your CNN model
-        pred = cnn.predict(img_data)
-        st.title('Predicted')
-        st.write(f'Predicted digit: {pred[0]}')
+# Predict the digit using your CNN model
+pred = cnn.predict(img_data)
+
+# Display the predicted digit
+st.title('Predicted digit:')
+st.write(f'Predicted digit: {pred[0]}')
+
+
+
 
