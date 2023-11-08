@@ -168,21 +168,6 @@ canvas_result = st_canvas(
     key="canvas",
 )
 
-# Add a canvas for drawing a digit
-st.subheader('9. Draw a Digit')
-
-# Create a canvas component
-canvas_result = st_canvas(
-    fill_color="rgba(0, 0, 0, 1)",  # Fixed fill color with some opacity
-    stroke_width=20,
-    stroke_color="black",
-    background_color="white",
-    width=150,
-    height=150,
-    drawing_mode="freedraw",
-    key="canvas",
-)
-
 # Do something interesting with the image data and labels
 if st.button('Predict'):
     if canvas_result.image_data is not None:
