@@ -114,6 +114,7 @@ st.write(f'Test accuracy: {accuracy_cnn:.2%}')
 # Define a function to generate a random digit
 def generate_random_digit():
     random_digit = np.random.randint(0, 10)  # Generate a random digit (0-9)
+    st.subheader('Randomly generated digit:')
     st.write(f"Randomly generated digit: {random_digit}")
     return random_digit
 
