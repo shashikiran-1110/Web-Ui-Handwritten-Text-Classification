@@ -157,6 +157,7 @@ st.pyplot(plt)
 st.subheader('9. Draw a Digit')
 
 # Create a canvas component
+# Create a canvas component
 canvas_result = st_canvas(
     fill_color="rgba(0, 0, 0, 1)",  # Fixed fill color with some opacity
     stroke_width=20,
@@ -173,12 +174,12 @@ if st.button('Predict'):
     if canvas_result.image_data is not None:
         st.image(canvas_result.image_data)
         
-        # Convert the image data to PIL format
-        pil_image = Image.fromarray(canvas_result.image_data)
+        # Convert the image data to a NumPy array and preprocess
+        img_data = canvas_result.image_data.astype('float32') / 255.0
+        img_data = img_data.reshape(1, 1, 150, 150)  # Adjust dimensions as needed
         
         # Resize and preprocess the image
-        pil_image = pil_image.resize((28, 28))
-        img_data = np.array(pil_image).astype('float32') / 255.0
+        img_data = cv2.resize(img_data, (28, 28), interpolation=cv2.INTER_LINEAR)
         img_data = img_data.reshape(-1, 1, 28, 28)
         
         # Predict the digit
