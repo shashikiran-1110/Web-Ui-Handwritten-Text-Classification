@@ -153,26 +153,27 @@ for i in range(min(16, sum(error_mask))):
     plt.axis('off')
 st.pyplot(plt)
 
-# Create a canvas component
 canvas_result = st_canvas(
     fill_color="rgba(0, 0, 0, 1)",
     stroke_width=20,
     stroke_color="black",
     background_color="white",
-    width=28,  # Adjusted to match your model's input size
-    height=28,  # Adjusted to match your model's input size
+    width=28,
+    height=28,
     drawing_mode="freedraw",
-    key="canvas",
+    key="canvas2",  # Change the key name
 )
 
 # Check if the canvas has data and make predictions
 if st.button('Predict'):
     if canvas_result.image_data is not None:
         # Preprocess the image data with Pillow
+        print("Before preprocessing")
         img_data = Image.fromarray((canvas_result.image_data * 255).astype('uint8'))
         img_data = img_data.resize((28, 28))
         img_data = np.array(img_data).astype('float32') / 255.0
         img_data = img_data.reshape(-1, 1, 28, 28)
+        print("After preprocessing")
 
         # Predict the digit
         pred = cnn.predict(img_data)
