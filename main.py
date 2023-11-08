@@ -9,6 +9,8 @@ import torch.nn.functional as F
 from skorch import NeuralNetClassifier
 from sklearn.metrics import accuracy_score
 from streamlit_drawable_canvas import st_canvas
+from PIL import Image
+import io
 
 # Set the title of the web app
 st.title('Handwritten Text Classification')
@@ -166,13 +168,35 @@ canvas_result = st_canvas(
     key="canvas",
 )
 
+# Add a canvas for drawing a digit
+st.subheader('9. Draw a Digit')
+
+# Create a canvas component
+canvas_result = st_canvas(
+    fill_color="rgba(0, 0, 0, 1)",  # Fixed fill color with some opacity
+    stroke_width=20,
+    stroke_color="black",
+    background_color="white",
+    width=150,
+    height=150,
+    drawing_mode="freedraw",
+    key="canvas",
+)
+
 # Do something interesting with the image data and labels
 if st.button('Predict'):
     if canvas_result.image_data is not None:
         st.image(canvas_result.image_data)
-        img = cv2.resize(canvas_result.image_data.astype('uint8'), (28, 28))
-        rescaled = cv2.resize(img, (28, 28), interpolation=cv2.INTER_LINEAR)
-        img = rescaled.reshape(-1, 1, 28, 28)
-        pred = cnn.predict(img)
+        
+        # Convert the image data to PIL format
+        pil_image = Image.fromarray(canvas_result.image_data)
+        
+        # Resize and preprocess the image
+        pil_image = pil_image.resize((28, 28))
+        img_data = np.array(pil_image).astype('float32') / 255.0
+        img_data = img_data.reshape(-1, 1, 28, 28)
+        
+        # Predict the digit
+        pred = cnn.predict(img_data)
         st.title('Predicted')
         st.write(f'Predicted digit: {pred[0]}')
