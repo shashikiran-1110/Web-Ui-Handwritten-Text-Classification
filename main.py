@@ -37,7 +37,7 @@ st.pyplot(plt)
 
 # Build a Neural Network with PyTorch
 st.subheader('3. Build a Neural Network')
-device = 'cuda' if torch.cuda.is available() else 'cpu'
+device = 'cuda' if torch.cuda.is_available() else 'cpu'
 mnist_dim = X.shape[1]
 hidden_dim = int(mnist_dim / 8)
 output_dim = len(np.unique(mnist.target))
