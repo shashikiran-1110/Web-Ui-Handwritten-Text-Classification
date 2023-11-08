@@ -14,7 +14,7 @@ from PIL import Image
 st.title('Handwritten Text Classification')
 
 # Load MNIST dataset
-mnist = fetch_openml('mnist_784', as_frame=False, cache=False, parser='auto')
+mnist = fetch_openml('mnist_784', as_frame=False, cache=False)
 X = mnist.data.astype('float32')
 y = mnist.target.astype('int64')
 X /= 255.0
