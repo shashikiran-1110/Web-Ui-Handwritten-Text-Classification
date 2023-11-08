@@ -61,6 +61,25 @@ cnn = NeuralNetClassifier(
 )
 cnn.fit(XCnn_train, y_train)
 
+# Test the model and calculate accuracy
+y_pred = cnn.predict(XCnn_test)
+st.subheader('Test Accuracy (CNN)')
+accuracy = accuracy_score(y_test, y_pred)
+st.write(f'Test accuracy: {accuracy:.2%}')
+
+# Visualize some misclassified images
+error_mask = y_pred != y_test
+st.subheader('Misclassified Images (CNN)')
+
+# Display up to 16 misclassified images and their predicted labels
+plt.figure(figsize=(10, 10))
+for i in range(min(16, sum(error_mask))):
+    plt.subplot(4, 4, i + 1)
+    plt.imshow(X_test[error_mask][i].reshape(28, 28), cmap='gray')
+    plt.title(y_pred[error_mask][i])
+    plt.axis('off')
+st.pyplot(plt)
+
 # Define a function to generate a random digit
 def generate_random_digit():
     random_digit = np.random.randint(0, 10)  # Generate a random digit (0-9)
@@ -78,5 +97,5 @@ img_data = img_data.reshape(-1, 1, 28, 28)
 pred = cnn.predict(img_data)
 
 # Display the predicted digit
-st.title('Predicted digit:')
+st.subheader('Predicted digit:')
 st.write(f'Predicted digit: {pred[0]}')
