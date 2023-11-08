@@ -9,10 +9,14 @@ import torch.nn.functional as F
 from skorch import NeuralNetClassifier
 from sklearn.metrics import accuracy_score
 from streamlit_drawable_canvas import st_canvas
+import os  # Import the os module for setting the environment variable
 import cv2
 
 # Set the title of the web app
 st.title('Handwritten Text Classification')
+
+# Set the environment variable for software rendering
+os.environ['LIBGL_ALWAYS_SOFTWARE'] = '1'
 
 # Load MNIST dataset
 st.subheader('1. Load and Preprocess Data')
