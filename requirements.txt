@@ -8,3 +8,4 @@ skorch
 streamlit-drawable-canvas
 opencv-python-headless==4.5.3.56
 libgl1-mesa-glx
+pyvirtualdisplay
