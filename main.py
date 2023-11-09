@@ -8,7 +8,6 @@ from torch import nn
 import torch.nn.functional as F
 from skorch import NeuralNetClassifier
 from sklearn.metrics import accuracy_score
-from streamlit_drawable_canvas import st_canvas
 from PIL import Image
 import io
 from torchvision import transforms
