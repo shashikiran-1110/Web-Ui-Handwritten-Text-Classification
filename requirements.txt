@@ -5,4 +5,3 @@ matplotlib
 torch
 skorch
 Pillow
-opencv-python
